@@ -15,7 +15,7 @@ env:
 jobs:
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     
     steps:
     - name: Checkout code
@@ -48,7 +48,7 @@ jobs:
 
   build-and-push:
     name: Build and Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     needs: test
     if: github.ref == 'refs/heads/main'
     
@@ -88,7 +88,7 @@ jobs:
 
   deploy-to-azure:
     name: Deploy to Azure
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
     
