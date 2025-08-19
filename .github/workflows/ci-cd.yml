@@ -111,15 +111,28 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
+    - name: Register Container Apps Provider
+      run: |
+        az provider register -n Microsoft.App --wait
+        az provider register -n Microsoft.OperationalInsights --wait
+
     - name: Deploy to Azure Container Apps
       id: deploy
       uses: azure/container-apps-deploy-action@v1
       with:
-        appSourcePath: ${{ github.workspace }}
-        acrName: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
         containerAppName: ${{ env.AZURE_WEBAPP_NAME }}
         resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
-        imageToBuild: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+    # - name: Deploy to Azure Container Apps
+    #   id: deploy
+    #   uses: azure/container-apps-deploy-action@v1
+    #   with:
+    #     appSourcePath: ${{ github.workspace }}
+    #     acrName: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
+    #     containerAppName: ${{ env.AZURE_WEBAPP_NAME }}
+    #     resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
+    #     imageToBuild: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         
     - name: Azure logout
       run: az logout
