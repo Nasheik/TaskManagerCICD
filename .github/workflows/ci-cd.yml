@@ -92,6 +92,10 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
     
+    permissions:
+      id-token: write
+      contents: read
+    
     environment:
       name: production
       url: ${{ steps.deploy.outputs.webapp-url }}
