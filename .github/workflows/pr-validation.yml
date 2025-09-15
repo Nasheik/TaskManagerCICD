@@ -40,7 +40,7 @@ jobs:
         du -sh dist/
         
     - name: Comment PR
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       if: github.event_name == 'pull_request'
       with:
         script: |
